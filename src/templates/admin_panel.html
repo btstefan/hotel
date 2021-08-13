@@ -1,0 +1,118 @@
+{% extends 'main.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_login.css')}}">
+	<title>Admin panel</title>
+{% endblock %}
+
+{% block body %}
+    <div id="adminpanel">
+        <div class="admin_nav">
+            <h1>Admin panel</h1>
+            <img src="/static/img/ln2.png" alt="linija" width="100px">
+            <h2>{{session['admin_ime']}}</h2>
+            <a href="{{ url_for('admin_logout') }}">logout</a>
+        </div>
+        <div class="admin_str">
+            <h2 class="admin_header">Reservations</h2>
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th><span>User</span></th>
+                        <th><span>Time</span></th>
+                        <th><span>Email</span></th>
+                        <th><span>Room number</span></th>
+                        <th><span>Check-in</span></th>
+                        <th><span>Check-out</span></th>
+                        <th><span>Options</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rezervacija in r %}
+                    <tr>
+                        <td><img src="{{rezervacija["korisnik_slika"]}}" alt="korisnik"></td>
+                        <td>{{rezervacija["korisnik_ime"]}}</td>
+                        <td>{{rezervacija["vreme"]}}</td>
+                        <td>{{rezervacija["vreme"]}}</td>
+                        <td>#{{rezervacija["soba_id"]}}</td>
+                        <td>{{rezervacija["pocetni_datum"]}}</td>
+                        <td>{{rezervacija["datum_odjave"]}}</td>
+                        <td>
+                            <a href="/obrisi/rezervaciju/{{rezervacija["_id"]}}" class="" title="Obriši">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2 class="admin_header">Users</h2>
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th><span>User</span></th>
+                        <th><span>Name and surname</span></th>
+                        <th><span>Email</span></th>
+                        <th><span>Year of birth</span></th>
+                        <th><span>Phone number</span></th>
+                        <th><span>Options</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for k in k %}
+                    <tr>
+                        <td><img src="{{k["slika"]}}" alt="korisnik"></td>
+                        <td>{{k["korisnicko_ime"]}}</td>
+                        <td>{{k["ime_prezime"]}}</td>
+                        <td>{{k["email"]}}</td>
+                        <td>{{k["godina_rodjenja"]}}</td>
+                        <td>{{k["telefon"]}}</td>
+                        <td>
+                            <a href="/profil/{{k["_id"]}}" class="" title="Izmeni">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="/obrisi/korisnika/{{k["_id"]}}" class="" title="Obriši">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2 class="admin_header">Rooms</h2>
+            <form id="dodajSobu" method="POST">
+                {{ soba.hidden_tag() }}
+                {{ soba.broj_sobe() }}
+                {{ soba.broj_kreveta() }}
+                {{ soba.cena_nocenja() }}
+                {{ soba.submit() }}
+            </form>
+            <table class="tabela sobe">
+                <thead>
+                    <tr>
+                        <th><span>Room number</span></th>
+                        <th><span>Bed count</span></th>
+                        <th><span>Price per night</span></th>
+                        <th><span>Options</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for soba in s %}
+                    <tr>
+                        <td>#{{soba["broj_sobe"]}}</td>
+                        <td>{{soba["broj_kreveta"]}}</td>
+                        <td>{{soba["cena_nocenja"]}} &euro;</td>
+                        <td>
+                            <a href="/obrisi/sobu/{{soba["_id"]}}" class="" title="Obriši">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
